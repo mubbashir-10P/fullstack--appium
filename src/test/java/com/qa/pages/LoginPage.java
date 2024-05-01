@@ -1,7 +1,7 @@
-package pages;
+package com.qa.pages;
 
-import base.AppDriver;
-import base.AppFactory;
+import com.qa.base.AppDriver;
+import com.qa.base.AppFactory;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.By;
@@ -26,22 +26,23 @@ public class LoginPage extends AppFactory {
     @AndroidFindBy(accessibility = "test-LOGIN")
     private WebElement loginButton;
 
-
-    By swagLagBanner = By.xpath("//android.widget.ScrollView[@content-desc=\"test-Login\"]/android.view.ViewGroup/android.widget.ImageView[1]");
+    @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"Username and password do not match any user in this service.\"]")
+    private WebElement errorMessage;
 
     public void enterUserName(String username){
-        new WebDriverWait(AppDriver.getDriver(), Duration.ofSeconds(20)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(swagLagBanner));
-        userNameTextBox.sendKeys(username);
-
+        sendKeys(userNameTextBox,username);
     }
 
     public void enterPassword(String password){
-        new WebDriverWait(AppDriver.getDriver(), Duration.ofSeconds(20)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(swagLagBanner));
-        passwordTextBox.sendKeys(password);
+        sendKeys(passwordTextBox,password);
+    }
+    public ProductPage clickLoginButton(){
+        clickElement(loginButton);
+
+        return new ProductPage();
     }
 
-    public void clickLoginButton(){
-        new WebDriverWait(AppDriver.getDriver(), Duration.ofSeconds(20)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(swagLagBanner));
-        loginButton.click();
+    public String getErrorMessage(){
+        return  getAttribute(errorMessage,"text");
     }
 }

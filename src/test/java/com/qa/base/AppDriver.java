@@ -1,4 +1,4 @@
-package base;
+package com.qa.base;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;

@@ -1,7 +1,7 @@
-package pages;
+package com.qa.pages;
 
-import base.AppDriver;
-import base.AppFactory;
+import com.qa.base.AppDriver;
+import com.qa.base.AppFactory;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
@@ -19,7 +19,7 @@ public class ProductPage extends AppFactory {
     public boolean isProductPageVisible(){
 
         String expectedResult = "PRODUCTS";
-        String actualResult = productPageBanner.getText();
+        String actualResult = getAttribute(productPageBanner, "text");
 
         if(expectedResult.equals(actualResult))
             return true;

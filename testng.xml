@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<suite name="Smoke Test" parallel="false">
+
+    <test name="validLogin">
+        <parameter name="platformName" value="Android"></parameter>
+        <parameter name="platformVersion" value="14"></parameter>
+        <parameter name="deviceName" value="emulator-5554"></parameter>
+        <classes>
+            <class name="testCases.LoginTest"></class>
+        </classes>
+    </test>
+
+</suite>

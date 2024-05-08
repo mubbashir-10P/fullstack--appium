@@ -2,12 +2,18 @@
 
 <suite name="Smoke Test" parallel="false">
 
+    <listeners>
+        <listener class-name="com.qa.listeners.TestListener"></listener>
+    </listeners>
     <test name="validLogin">
         <parameter name="platformName" value="Android"></parameter>
         <parameter name="platformVersion" value="14"></parameter>
         <parameter name="deviceName" value="emulator-5554"></parameter>
         <classes>
             <class name="com.qa.tests.LoginTest"></class>
+            <methods>
+                <include name="verifyValidUserLogin"></include>
+            </methods>
         </classes>
     </test>
 

@@ -1,16 +1,40 @@
 package com.qa.tests;
 
 import com.qa.base.AppFactory;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import com.qa.pages.LoginPage;
 import com.qa.pages.ProductPage;
-
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class LoginTest extends AppFactory {
     LoginPage loginPage;
     ProductPage productPage;
+    InputStream inputStream;
+    JSONObject loginUser;
+
+    @BeforeClass
+    public void setUpDataStream() throws IOException {
+        try{
+            String dataFile = "data/loginUser.json";
+            inputStream = getClass().getClassLoader().getResourceAsStream(dataFile);
+
+            JSONTokener jsonTokener = new JSONTokener(Objects.requireNonNull(inputStream));
+            loginUser = new JSONObject(jsonTokener);
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
+        finally {
+            if(inputStream != null)
+                inputStream.close();
+        }
+    }
 
     @BeforeMethod
     public void setUp(Method method){
@@ -22,8 +46,8 @@ public class LoginTest extends AppFactory {
     public void verifyInvalidUserName() throws InterruptedException {
         System.out.println("Verifying Valid credentials");
 
-        loginPage.enterUserName("invalidUserName");
-        loginPage.enterPassword("secret_sauce");
+        loginPage.enterUserName(loginUser.getJSONObject("invalidUser").getString("userName"));
+        loginPage.enterPassword(loginUser.getJSONObject("invalidUser").getString("password"));
 
         loginPage.clickLoginButton();
 
@@ -40,8 +64,8 @@ public class LoginTest extends AppFactory {
     public void verifyInvalidPassword() throws InterruptedException {
         System.out.println("Verifying Valid credentials");
 
-        loginPage.enterUserName("standard_user");
-        loginPage.enterPassword("invalidPassword");
+        loginPage.enterUserName(loginUser.getJSONObject("invalidPassword").getString("userName"));
+        loginPage.enterPassword(loginUser.getJSONObject("invalidPassword").getString("password"));
 
         loginPage.clickLoginButton();
 
@@ -57,8 +81,8 @@ public class LoginTest extends AppFactory {
     public void verifyValidUserLogin() throws InterruptedException {
         System.out.println("Verifying Valid credentials");
 
-        loginPage.enterUserName("standard_user");
-        loginPage.enterPassword("secret_sauce");
+        loginPage.enterUserName(loginUser.getJSONObject("validCredentials").getString("userName"));
+        loginPage.enterPassword(loginUser.getJSONObject("validCredentials").getString("password"));
 
         productPage = loginPage.clickLoginButton();
 

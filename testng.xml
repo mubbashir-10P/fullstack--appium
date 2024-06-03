@@ -11,11 +11,9 @@
         <parameter name="deviceName" value="emulator-5554"></parameter>
         <classes>
             <class name="com.qa.tests.LoginTest"></class>
-            <!--
             <methods>
                 <include name="verifyValidUserLogin"></include>
             </methods>
-            -->
         </classes>
     </test>
 

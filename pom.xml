@@ -15,6 +15,8 @@
         <appium.version>9.2.2</appium.version>
         <testng.version>7.9.0</testng.version>
         <org.json.version>20240303</org.json.version>
+        <log4j2core.version>2.23.1</log4j2core.version>
+        <log4j2api.version>2.23.1</log4j2api.version>
     </properties>
 
     <dependencies>
@@ -39,6 +41,19 @@
             <version>${org.json.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2core.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j2api.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

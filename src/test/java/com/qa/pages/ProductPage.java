@@ -16,13 +16,8 @@ public class ProductPage extends AppFactory {
     @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"PRODUCTS\"]")
     private WebElement productPageBanner;
 
-    public boolean isProductPageVisible(){
-
-        String expectedResult = "PRODUCTS";
+    public String isProductPageVisible(){
         String actualResult = getAttribute(productPageBanner, "text");
-
-        if(expectedResult.equals(actualResult))
-            return true;
-        else return false;
+        return actualResult;
     }
 }

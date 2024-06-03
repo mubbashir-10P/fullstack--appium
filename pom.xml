@@ -17,6 +17,7 @@
         <org.json.version>20240303</org.json.version>
         <log4j2core.version>2.23.1</log4j2core.version>
         <log4j2api.version>2.23.1</log4j2api.version>
+        <com-io.version>2.16.1</com-io.version>
     </properties>
 
     <dependencies>
@@ -54,6 +55,13 @@
             <artifactId>log4j-api</artifactId>
             <version>${log4j2api.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${com-io.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

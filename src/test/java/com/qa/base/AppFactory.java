@@ -24,6 +24,7 @@ public class AppFactory {
     public static AppiumDriver driver;
     public static ConfigReader configReader;
     protected static HashMap<String, String> stringHashMap = new HashMap<>();
+    protected static String dateTime;
     Utilities utilities;
     InputStream stringIs;
 
@@ -39,6 +40,8 @@ public class AppFactory {
             log.error("This is error message.");
             configReader = new ConfigReader();
             utilities = new Utilities();
+            dateTime = utilities.getDateTime();
+
             String xmlFileName = "strings/strings.xml";
             stringIs = getClass().getClassLoader().getResourceAsStream(xmlFileName);
 
@@ -87,6 +90,10 @@ public class AppFactory {
 
     public String getAttribute(WebElement element, String attribute){
         return waitForVisibility(element).getAttribute(attribute);
+    }
+
+    public static String getDateAndTime(){
+        return dateTime;
     }
 
     @AfterTest

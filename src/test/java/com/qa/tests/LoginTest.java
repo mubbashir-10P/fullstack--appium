@@ -39,12 +39,12 @@ public class LoginTest extends AppFactory {
     @BeforeMethod
     public void setUp(Method method){
         loginPage = new LoginPage();
-        System.out.println("\n"+ "******** Start Test:" + method.getName()+ "********" + "\n");
+        utilities.log().info("\n"+ "******** Start Test:" + method.getName()+ "********" + "\n");
     }
 
     @Test
     public void verifyInvalidUserName() throws InterruptedException {
-        System.out.println("Verifying Valid credentials");
+        utilities.log().info("Verifying Valid credentials");
 
         loginPage.enterUserName(loginUser.getJSONObject("invalidUser").getString("userName"));
         loginPage.enterPassword(loginUser.getJSONObject("invalidUser").getString("password"));
@@ -56,13 +56,13 @@ public class LoginTest extends AppFactory {
 
         Assert.assertEquals(actualErrorMessage,expectedErrorMessage,"Login not failed!");
 
-        System.out.println("Login Failed");
+        utilities.log().info("Login Failed");
         Thread.sleep(3000);
     }
 
     @Test
     public void verifyInvalidPassword() throws InterruptedException {
-        System.out.println("Verifying Valid credentials");
+        utilities.log().info("Verifying Valid credentials");
 
         loginPage.enterUserName(loginUser.getJSONObject("invalidPassword").getString("userName"));
         loginPage.enterPassword(loginUser.getJSONObject("invalidPassword").getString("password"));
@@ -73,13 +73,13 @@ public class LoginTest extends AppFactory {
         String actualErrorMessage = loginPage.getErrorMessage();
 
         Assert.assertEquals(actualErrorMessage,expectedErrorMessage,"Login not failed!");
-        System.out.println("Login Failed");
+        utilities.log().info("Login Failed");
         Thread.sleep(3000);
     }
 
     @Test
     public void verifyValidUserLogin() throws InterruptedException {
-        System.out.println("Verifying Valid credentials");
+        utilities.log().info("Verifying Valid credentials");
 
         loginPage.enterUserName(loginUser.getJSONObject("validCredentials").getString("userName"));
         loginPage.enterPassword(loginUser.getJSONObject("validCredentials").getString("password"));
@@ -88,7 +88,7 @@ public class LoginTest extends AppFactory {
 
         String expectedResult = stringHashMap.get("product_title");
         Assert.assertEquals(productPage.isProductPageVisible(),expectedResult,"Login Is Not Successful");
-        System.out.println("Login successfully.");
+        utilities.log().info("Login successfully.");
         Thread.sleep(3000);
     }
 

@@ -18,9 +18,12 @@
         <log4j2core.version>2.23.1</log4j2core.version>
         <log4j2api.version>2.23.1</log4j2api.version>
         <com-io.version>2.16.1</com-io.version>
+        <extentreport.version>5.1.1</extentreport.version>
+        <common-codec.version>1.17.0</common-codec.version>
     </properties>
 
     <dependencies>
+
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
@@ -28,6 +31,7 @@
             <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
         <dependency>
             <groupId>io.appium</groupId>
@@ -55,6 +59,7 @@
             <artifactId>log4j-api</artifactId>
             <version>${log4j2api.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -62,6 +67,19 @@
             <version>${com-io.version}</version>
         </dependency>
 
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreport.version}</version>
+        </dependency>
 
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${common-codec.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>

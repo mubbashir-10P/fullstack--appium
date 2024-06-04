@@ -1,7 +1,12 @@
 package com.qa.listeners;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
 import com.qa.base.AppDriver;
 import com.qa.base.AppFactory;
+import com.qa.reports.ExtentReport;
+import com.qa.utils.Utilities;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -14,11 +19,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestListener implements ITestListener {
 
+    private static Utilities utilities = new Utilities();
+    @Override
     public void onTestFailure(ITestResult result){
         if(result.getThrowable() != null){
             StringWriter stringWriter = new StringWriter();
@@ -27,11 +35,12 @@ public class TestListener implements ITestListener {
             result.getThrowable().printStackTrace(printWriter);
 
             String testStartMessage = String.format("Testcase '%s' failed see logs below",result.getMethod().getMethodName());
-            System.out.println(testStartMessage);
-            System.out.println(printWriter.toString());
+            utilities.log().error(testStartMessage);
+            utilities.log().error(result.getThrowable().getMessage());
         }
 
         File file = ((TakesScreenshot) AppDriver.getDriver()).getScreenshotAs(OutputType.FILE);
+
         Map<String,String> params = new HashMap<>();
 
         params = result.getTestContext().getCurrentXmlTest().getAllParameters();
@@ -43,7 +52,7 @@ public class TestListener implements ITestListener {
                 + ".png";
 
         String completeImagePath = System.getProperty("user.dir")+File.separator + imagePath;
-        System.out.println(completeImagePath);
+        utilities.log().info(completeImagePath);
 
         try{
             FileUtils.copyFile(file,new File(imagePath));
@@ -53,12 +62,29 @@ public class TestListener implements ITestListener {
         catch (IOException ex){
             ex.printStackTrace();
         }
+        byte[] encoded = null;
+        try{
+            encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
+        }catch (IOException exception){
+            exception.printStackTrace();
+        }
+
+        assert encoded != null;
+        ExtentReport.getTest().fail("Test Failed",
+                MediaEntityBuilder.createScreenCaptureFromBase64String(new String(encoded, StandardCharsets.US_ASCII)).build());
+
+        ExtentReport.getTest().fail(result.getThrowable());
     }
 
     @Override
     public void onTestStart(ITestResult result){
         String testStartMessage = String.format("Test Execution Started");
-        System.out.println(testStartMessage);
+        utilities.log().info(testStartMessage);
+
+        ExtentReport.startTest(result.getName(),result.getMethod().getDescription())
+                .assignCategory(AppDriver.getPlatformName()+ "-" + AppDriver.getDeviceName())
+                .assignAuthor("Mubbashir Shakil");
+
 
         // TODO:
     }
@@ -66,16 +92,20 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult result){
         String testStartMessage = String.format("Testcase '%s' passed successfully",result.getMethod().getMethodName());
-        System.out.println(testStartMessage);
+        utilities.log().info(testStartMessage);
+
+        ExtentReport.getTest().log(Status.PASS,"Test Passed");
     }
 
     @Override
     public void onTestSkipped(ITestResult result){
-
+        utilities.log().info("Test Skipped");
+        ExtentReport.getTest().log(Status.SKIP,"Test Skipped");
     }
 
     @Override
     public void onFinish(ITestContext context){
-
+        utilities.log().info("Test Finished");
+        ExtentReport.getExtentReports().flush();
     }
 }

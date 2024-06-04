@@ -17,7 +17,7 @@ public class ProductPage extends AppFactory {
     private WebElement productPageBanner;
 
     public String isProductPageVisible(){
-        String actualResult = getAttribute(productPageBanner, "text");
+        String actualResult = getText(productPageBanner, "Product Page Title Is: ");
         return actualResult;
     }
 }

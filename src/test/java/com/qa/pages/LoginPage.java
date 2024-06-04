@@ -4,13 +4,9 @@ import com.qa.base.AppDriver;
 import com.qa.base.AppFactory;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 
 public class LoginPage extends AppFactory {
     public LoginPage(){
@@ -30,19 +26,19 @@ public class LoginPage extends AppFactory {
     private WebElement errorMessage;
 
     public void enterUserName(String username){
-        sendKeys(userNameTextBox,username);
+        sendKeys(userNameTextBox,username, "Username is: "+username);
     }
 
     public void enterPassword(String password){
-        sendKeys(passwordTextBox,password);
+        sendKeys(passwordTextBox,password, "Password is: "+password);
     }
     public ProductPage clickLoginButton(){
-        clickElement(loginButton);
+        clickElement(loginButton, "Clicking on login button");
 
         return new ProductPage();
     }
 
     public String getErrorMessage(){
-        return  getAttribute(errorMessage,"text");
+        return  getText(errorMessage,"Error text is: ");
     }
 }

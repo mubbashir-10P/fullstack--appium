@@ -1,21 +1,21 @@
 package com.qa.base;
 
+import com.aventstack.extentreports.Status;
+import com.qa.reports.ExtentReport;
 import com.qa.utils.Utilities;
 import com.qa.utils.ConfigReader;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
@@ -25,27 +25,46 @@ public class AppFactory {
     public static ConfigReader configReader;
     protected static HashMap<String, String> stringHashMap = new HashMap<>();
     protected static String dateTime;
-    Utilities utilities;
+    private static AppiumDriverLocalService service;
+    public Utilities utilities = new Utilities();
     InputStream stringIs;
 
-    static Logger log = LogManager.getLogger(AppFactory.class.getName());
+    @BeforeSuite
+    public void upAndRunningAppiumServer(){
+        service = getAppiumServerDefault();
+        if(!utilities.checkIfAppiumServerIsRunning(4723)){
+            service.start();
+            service.clearOutPutStreams();
+            utilities.log().info("Starting appium server...");
+        }else {
+            utilities.log().info("Appium Server is already up and running...");
+        }
+    }
+
+    @AfterSuite
+    public void shutDownServer(){
+        service.stop();
+        utilities.log().info("Appium server shutdown...");
+    }
+
+    public AppiumDriverLocalService getAppiumServerDefault(){
+        return AppiumDriverLocalService.buildDefaultService();
+    }
 
     @BeforeTest
     @Parameters({"platformName","platformVersion","deviceName"})
     public void initializer(String platformName, String platformVersion, String deviceName) throws Exception {
         try{
-            log.debug("This is debug message");
-            log.info("This is info message");
-            log.warn("This is warning message.");
-            log.error("This is error message.");
             configReader = new ConfigReader();
-            utilities = new Utilities();
             dateTime = utilities.getDateTime();
 
             String xmlFileName = "strings/strings.xml";
             stringIs = getClass().getClassLoader().getResourceAsStream(xmlFileName);
 
             stringHashMap = utilities.parseStringXML(stringIs);
+
+            AppDriver.setPlatformName(platformName);
+            AppDriver.setDeviceName(deviceName);
 
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("platformName",platformName);
@@ -59,9 +78,10 @@ public class AppFactory {
             capabilities.setCapability("app",System.getProperty("user.dir")+configReader.getApkPath());
 
             driver = new AndroidDriver(new URL(configReader.getAppiumServerEndPointURL()),capabilities);
+            utilities.log().info("appURL is {}",configReader.getAppiumServerEndPointURL());
 
             AppDriver.setDriver(driver);
-            System.out.println("Android Driver Initialized!");
+            utilities.log().info("Android driver initialized...");
         }
         catch (Exception ex){
             ex.printStackTrace();
@@ -80,16 +100,29 @@ public class AppFactory {
         return element;
     }
 
-    public void clickElement(WebElement element){
+    public void clickElement(WebElement element, String message){
         waitForVisibility(element).click();
+        utilities.log().info(message);
+        ExtentReport.getTest().log(Status.INFO,message);
     }
 
-    public void sendKeys(WebElement element, String text){
+    public void sendKeys(WebElement element, String text, String message){
         waitForVisibility(element).sendKeys(text);
+        utilities.log().info(message);
+        ExtentReport.getTest().log(Status.INFO,message);
     }
 
     public String getAttribute(WebElement element, String attribute){
         return waitForVisibility(element).getAttribute(attribute);
+    }
+
+    public  String getText(WebElement element, String message){
+        String elementText = null;
+        elementText = getAttribute(element,"text");
+        utilities.log().info("{}{}",message,elementText);
+        ExtentReport.getTest().log(Status.INFO,message + elementText);
+
+        return  elementText;
     }
 
     public static String getDateAndTime(){
@@ -98,7 +131,7 @@ public class AppFactory {
 
     @AfterTest
     public static void quiteDriver(){
-        if(null != driver){
+        if(null != driver) {
             driver.quit();
         }
     }

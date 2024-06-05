@@ -7,10 +7,10 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-public class ProductPage extends AppFactory {
+public class ProductPage extends BasePage {
 
     public ProductPage(){
-        PageFactory.initElements(new AppiumFieldDecorator(AppDriver.getDriver()),this);
+        super();
     }
 
     @AndroidFindBy(xpath = "//android.widget.TextView[@text=\"PRODUCTS\"]")

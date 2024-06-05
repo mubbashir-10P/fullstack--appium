@@ -9,8 +9,6 @@ import com.qa.utils.ConfigReader;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.openqa.selenium.WebElement;
@@ -28,12 +26,12 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class AppFactory {
-    public static AppiumDriver driver;
-    public static ConfigReader configReader;
+    protected static AppiumDriver driver;
+    protected static ConfigReader configReader;
     protected static HashMap<String, String> stringHashMap = new HashMap<>();
     protected static String dateTime;
-    private static AppiumDriverLocalService service;
-    public Utilities utilities = new Utilities();
+    protected static AppiumDriverLocalService service;
+    protected Utilities utilities = new Utilities();
     InputStream stringIs;
 
     protected LoginPage loginPage;

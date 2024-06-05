@@ -5,17 +5,18 @@
     <listeners>
         <listener class-name="com.qa.listeners.TestListener"></listener>
     </listeners>
-    <test name="validLogin">
+    <test name="Login Test Scenarios">
         <parameter name="platformName" value="Android"></parameter>
         <parameter name="platformVersion" value="14"></parameter>
         <parameter name="deviceName" value="emulator-5554"></parameter>
         <classes>
             <class name="com.qa.tests.LoginTest">
                 <methods>
-                    <include name="verifyValidUserLogin"></include>
+                    <!--<include name="verifyValidUserLogin"></include>-->
                 </methods>
             </class>
 
         </classes>
     </test>
+
 </suite>

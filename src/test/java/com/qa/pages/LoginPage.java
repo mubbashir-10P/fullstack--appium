@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 
-public class LoginPage extends AppFactory {
+public class LoginPage extends BasePage {
     public LoginPage(){
-        PageFactory.initElements(new AppiumFieldDecorator(AppDriver.getDriver()),this);
+        super();
     }
 
     @AndroidFindBy(accessibility = "test-Username")

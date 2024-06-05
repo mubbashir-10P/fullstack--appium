@@ -34,7 +34,6 @@ public class LoginPage extends AppFactory {
     }
     public ProductPage clickLoginButton(){
         clickElement(loginButton, "Clicking on login button");
-
         return new ProductPage();
     }
 

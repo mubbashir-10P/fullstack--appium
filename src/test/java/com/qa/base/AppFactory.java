@@ -1,6 +1,8 @@
 package com.qa.base;
 
 import com.aventstack.extentreports.Status;
+import com.qa.pages.LoginPage;
+import com.qa.pages.ProductPage;
 import com.qa.reports.ExtentReport;
 import com.qa.utils.Utilities;
 import com.qa.utils.ConfigReader;
@@ -9,16 +11,21 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.*;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class AppFactory {
     public static AppiumDriver driver;
@@ -28,6 +35,12 @@ public class AppFactory {
     private static AppiumDriverLocalService service;
     public Utilities utilities = new Utilities();
     InputStream stringIs;
+
+    protected LoginPage loginPage;
+    protected ProductPage productPage;
+    protected InputStream inputStream;
+    protected JSONObject loginUser;
+
 
     @BeforeSuite
     public void upAndRunningAppiumServer(){
@@ -49,6 +62,30 @@ public class AppFactory {
 
     public AppiumDriverLocalService getAppiumServerDefault(){
         return AppiumDriverLocalService.buildDefaultService();
+    }
+
+    @BeforeClass
+    public void setUpDataStream() throws IOException {
+        try{
+            String dataFile = "data/loginUser.json";
+            inputStream = getClass().getClassLoader().getResourceAsStream(dataFile);
+
+            JSONTokener jsonTokener = new JSONTokener(Objects.requireNonNull(inputStream));
+            loginUser = new JSONObject(jsonTokener);
+        }
+        catch (Exception exception){
+            exception.printStackTrace();
+        }
+        finally {
+            if(inputStream != null)
+                inputStream.close();
+        }
+    }
+
+    @BeforeMethod
+    public void setUp(Method method){
+        loginPage = new LoginPage();
+        utilities.log().info("\n"+ "******** Start Test:" + method.getName()+ "********" + "\n");
     }
 
     @BeforeTest

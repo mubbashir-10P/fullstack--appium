@@ -12,11 +12,10 @@
         <classes>
             <class name="com.qa.tests.LoginTest">
                 <methods>
-                    <!--<include name="verifyValidUserLogin"></include>-->
+                    <!---->
                 </methods>
             </class>
             <class name="com.qa.tests.ProductTest">
-
             </class>
         </classes>
     </test>

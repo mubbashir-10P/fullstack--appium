@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 public class Utilities {
     public static final long WAIT = 10;
+    public static final long WAITFORCLICK = 20;
 
     public HashMap<String, String> parseStringXML(InputStream file) throws Exception {
         HashMap<String,String> stringMap = new HashMap<>();

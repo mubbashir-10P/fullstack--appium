@@ -15,8 +15,9 @@
                     <!--<include name="verifyValidUserLogin"></include>-->
                 </methods>
             </class>
+            <class name="com.qa.tests.ProductTest">
 
+            </class>
         </classes>
     </test>
-
 </suite>

@@ -10,4 +10,5 @@ public class BasePage extends AppFactory {
     public BasePage(){
         PageFactory.initElements(new AppiumFieldDecorator(AppDriver.getDriver()),this);
     }
+
 }

@@ -2,7 +2,9 @@ package com.qa.base;
 
 import com.aventstack.extentreports.Status;
 import com.qa.pages.LoginPage;
+import com.qa.pages.MenuPage;
 import com.qa.pages.ProductPage;
+import com.qa.pages.SettingsPage;
 import com.qa.reports.ExtentReport;
 import com.qa.utils.Utilities;
 import com.qa.utils.ConfigReader;
@@ -36,6 +38,8 @@ public class AppFactory {
 
     protected LoginPage loginPage;
     protected ProductPage productPage;
+    protected MenuPage menuPage;
+    protected SettingsPage settingsPage;
     protected InputStream inputStream;
     protected JSONObject loginUser;
 
@@ -158,6 +162,10 @@ public class AppFactory {
         ExtentReport.getTest().log(Status.INFO,message + elementText);
 
         return  elementText;
+    }
+    public void waitForElementToBeClickable(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(Utilities.WAITFORCLICK));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public static String getDateAndTime(){

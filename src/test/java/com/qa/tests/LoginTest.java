@@ -1,5 +1,6 @@
 package com.qa.tests;
 
+import com.qa.pages.MenuPage;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -43,6 +44,23 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void verifyValidUserLogin() throws InterruptedException {
-        LoginToSwagLabAppWithValidCredentials();
+
+        try{
+            utilities.log().info("Verifying Valid credentials");
+
+            loginPage.enterUserName(loginUser.getJSONObject("validCredentials").getString("userName"));
+            loginPage.enterPassword(loginUser.getJSONObject("validCredentials").getString("password"));
+
+            productPage = loginPage.clickLoginButton();
+
+            String expectedResult = stringHashMap.get("product_title");
+            Assert.assertEquals(productPage.isProductPageVisible(),expectedResult,"Login Is Not Successful");
+            utilities.log().info("Login successfully.");
+            Thread.sleep(3000);
+        }catch (Exception ex){
+            Assert.fail(ex.getMessage());
+        }finally {
+            logOut();
+        }
     }
 }

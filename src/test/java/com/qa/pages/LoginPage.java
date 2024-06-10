@@ -37,6 +37,13 @@ public class LoginPage extends BasePage {
         return new ProductPage();
     }
 
+    public ProductPage loginToApp(String userName, String passwrod){
+        enterUserName(userName);
+        enterPassword(passwrod);
+        clickLoginButton();
+        return new ProductPage();
+    }
+
     public String getErrorMessage(){
         return  getText(errorMessage,"Error text is: ");
     }
